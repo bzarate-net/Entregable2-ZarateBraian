@@ -8,7 +8,7 @@ const guardarRegistros = () => {
 
 // Función para agregar un nuevo registro con todos los campos
 
-const nuevoRegistro = (data) => {
+const registro = (data) => {
     registro.push(data);
     localStorage.setItem('registro', JSON.stringify(registro));
     sectionResult.innerHTML = '';
@@ -16,8 +16,8 @@ const nuevoRegistro = (data) => {
 };
   //Se crea un objeto con los datos ingresados
 document.addEventListener('DOMContentLoaded', () => {
-    const formulario = document.getElementById('registroVehiculos');
-    formulario.addEventListener('submit', (e) => {
+    const formulario = document.getElementById('agregar');
+    formulario.addEventListener('registroVehiculos', (e) => {
         e.preventDefault();
         const numeroDeOrden = e.target[0].value;
         const fecha = e.target[1].value;
@@ -27,18 +27,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const patente = e.target[5].value;
         const kilometraje = e.target[6].value;
 
-    const newData = {
+    const formulario = {
         numeroDeOrden,
         fecha,
         marca,
-        modelo,
+        modelo, 
         chofer,
         patente,
         kilometraje
     };
 });
 
-    nuevoRegistro(newData);
+    nuevoRegistro(formulario);
 
     e.target[0].value = '';
     e.target[1].value = '';
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
 //Se crea una función para asignar los títulos de la tabla
 const titulo = () => {
     const table = document.createElement('table');
-    //titulo.className = 'table-group';
+
     const titleRow = document.createElement('tr');
 
     const titleNumeroDeOrden = document.createElement('th');
@@ -136,7 +136,7 @@ const crearTabla = (data) => {
     
 }
 
-const showData = (data) => {
+const dataList = (registrosVehiculos) => {
     const sectionResult = document.createElement('detalle');
     sectionResult.innerHTML = '';
     const detalist = JSON.parse(localStorage.getItem(registrosVehiculos));
@@ -147,9 +147,15 @@ const showData = (data) => {
 };
 
 const eliminarVehiculo = () => {
-    registrosVehiculos = [];
-    guardarRegistros();
-    mostrarRegistros();
+    localStorage.removeItem("regitrosVehiculos");
+    registrosVehiculos =[]
+    showData();
+
+    alert('Registros eliminados correctamente')
 }
 
+const bntEliminar = document.getElementById('btnEliminar');
+bntEliminar.addEventListener('click', eliminarVehiculo);
 
+const bntMostrarRegistros = document.getElementById('btnMostrarRegistros');
+bntMostrarRegistros.addEventListener('click', verInventario);
