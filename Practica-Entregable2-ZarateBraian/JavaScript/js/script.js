@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem("registrosVehiculos", JSON.stringify(registrosVehiculos));
     };
 
-// Función para agregar un nuevo registro con todos los campos
+// Función para agregar un nuevo registro 
 
     const registro = (data) => {
         registrosVehiculos.push(data);
@@ -150,18 +150,21 @@ document.addEventListener('DOMContentLoaded', () => {
         bntEliminar.addEventListener('click', eliminarVehiculo);
 
     const bntMostrarRegistros = document.getElementById('verInventario');
-        bntMostrarRegistros.addEventListener('click', verInventario);
+        bntMostrarRegistros.addEventListener('click', showData);
 
     const bntBuscar = document.getElementById('buscar');
-        bntBuscar.addEventListener('click', buscar);
+        bntBuscar.addEventListener('click', buscarVehiculo);
 
     function buscarVehiculo() {
         const buscar = document.getElementById('buscar').value;
         const registros = registrosVehiculos.filter(registro => registro.numeroDeOrden.includes(buscar));
         const sectionResult = document.getElementById('detalle');
-        const createTable = crearTabla;
-        createTable(registro);
-    };
+        sectionResult.innerHTML = '';
+        registros.forEach(registro => {     
+            const createTable = crearTabla;
+            createTable(registro);
+        })
+    }
 
     function showData(){
         const sectionResult = document.getElementById('detalle');
@@ -172,3 +175,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+
