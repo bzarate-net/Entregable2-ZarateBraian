@@ -1,81 +1,155 @@
-// Registro de unidades de traslados
+// Recuperar el array de registros desde localStorage o inicializarlo vacío
+let registrosVehiculos = JSON.parse(localStorage.getItem("registrosVehiculos")) || [];
 
-let Inventario = [];
+// Función para guardar en localStorage
+const guardarRegistros = () => {
+    localStorage.setItem("registrosVehiculos", JSON.stringify(registrosVehiculos));
+};
 
-// Funcion para agregar un vehiculo al inventario
-function agregarNuevoVehiculo () {
-    let Marca = prompt("Ingrese la marca del vehiculo");
-    let Modelo = prompt("Ingrese el modelo del vehiculo");   
-    let Velocidad = prompt("Ingrese la velocidad del vehiculo");
-    let Patente = prompt("Ingrese la patente del vehiculo");
+// Función para agregar un nuevo registro con todos los campos
 
-// Funcion para agregar un vehiculo al inventario
-Inventario.push({ Marca, Modelo, Velocidad, Patente });
-    alert(`El vehiculo ha sido agregado correctamente al inventario: - ${Marca} - ${Modelo} - ${Velocidad} - ${Patente}`);
-return;
+const nuevoRegistro = (data) => {
+    registro.push(data);
+    localStorage.setItem('registro', JSON.stringify(registro));
+    sectionResult.innerHTML = '';
+    showData()
+};
+  //Se crea un objeto con los datos ingresados
+document.addEventListener('DOMContentLoaded', () => {
+    const formulario = document.getElementById('registroVehiculos');
+    formulario.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const numeroDeOrden = e.target[0].value;
+        const fecha = e.target[1].value;
+        const marca = e.target[2].value;
+        const modelo = e.target[3].value;
+        const chofer = e.target[4].value;
+        const patente = e.target[5].value;
+        const kilometraje = e.target[6].value;
+
+    const newData = {
+        numeroDeOrden,
+        fecha,
+        marca,
+        modelo,
+        chofer,
+        patente,
+        kilometraje
+    };
+});
+
+    nuevoRegistro(newData);
+
+    e.target[0].value = '';
+    e.target[1].value = '';
+    e.target[2].value = '';
+    e.target[3].value = '';
+    e.target[4].value = '';
+    e.target[5].value = '';
+    e.target[6].value = '';
+
+
+});
+
+
+//Se crea una función para asignar los títulos de la tabla
+const titulo = () => {
+    const table = document.createElement('table');
+    //titulo.className = 'table-group';
+    const titleRow = document.createElement('tr');
+
+    const titleNumeroDeOrden = document.createElement('th');
+    titleNumeroDeOrden.innerText = 'Numero de orden';
+
+    const titleFecha = document.createElement('th');
+    titleFecha.innerText = 'Fecha';
+
+    const titleMarca = document.createElement('th')
+    titleMarca.innerText = 'Marca';
+
+    const titleModelo = document.createElement('th');
+    titleModelo.innerText = 'Modelo';
+
+    const titleChofer = document.createElement('th');
+    titleChofer.innerText = 'Chofer';
+
+    const titlePatente = document.createElement('th');
+    titlePatente.innerText = 'Patente';
+
+    const titleKilometraje = document.createElement('th');
+    titleKilometraje.innerText = 'Kilometraje';
+
+
+  //  const titleCountry = document.createElement('th');
+ //Se crean y se añaden los títulos a la tabla
+    titleRow.appendChild(titleNumeroDeOrden);
+    titleRow.appendChild(titleFecha);
+    titleRow.appendChild(titleMarca);
+    titleRow.appendChild(titleModelo);
+    titleRow.appendChild(titleChofer);
+    titleRow.appendChild(titlePatente);
+    titleRow.appendChild(titleKilometraje);
+
+    table.appendChild(titleRow);
+    const sectionResult = document.getElementById('detalle');
+    sectionResult.appendChild(table);
+};
+
+const crearTabla = (data) => {
+    const table = document.createElement('table');
+
+    const dataRow = document.createElement('tr');
+
+    const numeroDeOrden = document.createElement('td');
+    numeroDeOrden.innerText = data.numeroDeOrden;
+
+    const fecha = document.createElement('td');
+    fecha.innerText = data.numeroDeOrden;
+
+    const marca = document.createElement('td');
+    marca.innerText = data.marca;
+
+    const modelo = document.createElement('td');
+    modelo.innerText = data.modelo;
+
+    const chofer = document.createElement('td');
+    chofer.innerText = data.chofer;
+
+    const patente = document.createElement('td');
+    patente.innerText = data.patente;
+
+    const kilometraje = document.createElement('td');
+    kilometraje.innerText = data.kilometraje;
+
+    dataRow.appendChild(numeroDeOrden);
+    dataRow.appendChild(fecha);
+    dataRow.appendChild(marca);
+    dataRow.appendChild(modelo);
+    dataRow.appendChild(marca);
+    dataRow.appendChild(chofer);
+    dataRow.appendChild(patente);
+    dataRow.appendChild(kilometraje);
+
+    table.oppendchild(dataRow);
+    const sectionResult = document.getElementById('detalle');
+    sectionResult.appendChild(table);
+    
+}
+
+const showData = (data) => {
+    const sectionResult = document.createElement('detalle');
+    sectionResult.innerHTML = '';
+    const detalist = JSON.parse(localStorage.getItem(registrosVehiculos));
+    dataList.forEach(el => {
+        const createTable = crearTabla;
+        createTable(el);
+    });
+};
+
+const eliminarVehiculo = () => {
+    registrosVehiculos = [];
+    guardarRegistros();
+    mostrarRegistros();
 }
 
 
-// Funcion para mostrar el inventario de vehiculos
-function mostrarInventario() {
-    if (Inventario.length === 0){
-        alert("El inventario est    a vacio");
-        return;         
-    }
-        let mensaje = "Inventario de vehiculos:\n";
-        for(let i = 0 ; i < Inventario.length; i++){
-            mensaje += `Vehiculo ${i+1}. - Marca: ${Inventario[i].Marca} - Modelo: ${Inventario[i].Modelo} - Velocidad: ${Inventario[i].Velocidad } - Patente: ${Inventario[i].Patente}\n`;
-        }
-        alert(mensaje);
-}
-
-// Funcion para eliminar un vehiculo del inventario
-function eliminarVehiculo (){
-    let patente = (prompt("Ingrese la patente del vehiculo a elimnar"))
-    for(let i = 0; i < Inventario.length; i++){
-        if(Inventario[i].Patente == patente){
-            Inventario.splice(i, 1);
-            alert(`El vehiculo con patente ${patente} Marca: ${Marca} - Modelo ${Modelo} -ha sido eliminado del inventario`)
-        }
-    }
-        alert(`El vehiculo con patente ${patente} no existe en el inventario`)
-        return;
-    }
-
-    //Mostrar Vehiculos con infracciones mayor 60KM
-
-function mostrarVehiculosConInfracciones() {
-    let mensaje = "Vehiculos con infracciones mayor a 60KM:\n";
-    for (let i = 0; i < Inventario.length; i++) {
-        if (Inventario[i].Velocidad > 60) {
-            mensaje += `Vehiculo ${i + 1}. - Marca: ${Inventario
-                [i].Marca} - Modelo: ${Inventario[i].Modelo} - Velocidad : ${Inventario[i].Velocidad} - Patente: ${Inventario[i].Patente}\n`;
-                }
-            }
-            alert(mensaje);
-            return;
-        }    
-
-//menu de opciones
-
-function MenuOpciones() {
-    let opcion;
-    do {
-        opcion = prompt("Ingrese una opcion del registro: \n 1. Agregar un vehiculo al inventario \n 2. Mostrar el inventario \n 3. Eliminar un vehiculo del inventario \n 4. Mostrar vehiculos con infraccion mayor a 60Km \n 5. Salir");
-        switch (opcion) {
-            case "1": agregarNuevoVehiculo();
-            break;
-            case "2": mostrarInventario();
-            break;
-            case "3": eliminarVehiculo();   
-            break;
-            case "4": mostrarVehiculosConInfracciones()
-            break;
-            case "5": alert("Gracias por utilizar el sistema");
-            break;  
-            default: alert("Opcion invalida, intente nuevamente");
-            }
-    }while (opcion !== "5");
-}
-
-MenuOpciones()
