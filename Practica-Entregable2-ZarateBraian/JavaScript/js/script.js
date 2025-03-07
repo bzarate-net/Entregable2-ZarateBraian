@@ -1,5 +1,6 @@
 // Recuperar el array de registros desde localStorage o inicializarlo vacío
-let registrosVehiculos = JSON.parse(localStorage.getItem("registrosVehiculos")) || [];
+document.addEventListener('DOMContentLoaded', () => {
+    let registrosVehiculos = JSON.parse(localStorage.getItem("registrosVehiculos")) || [];
 
 // Función para guardar en localStorage
 const guardarRegistros = () => {
@@ -9,15 +10,15 @@ const guardarRegistros = () => {
 // Función para agregar un nuevo registro con todos los campos
 
 const registro = (data) => {
-    registro.push(data);
-    localStorage.setItem('registro', JSON.stringify(registro));
+    registrosVehiculos.push(data);
+   guardarRegistros();
     sectionResult.innerHTML = '';
     showData()
 };
   //Se crea un objeto con los datos ingresados
 document.addEventListener('DOMContentLoaded', () => {
     const formulario = document.getElementById('agregar');
-    formulario.addEventListener('registroVehiculos', (e) => {
+    formulario.addEventListener('submit', (e) => {
         e.preventDefault();
         const numeroDeOrden = e.target[0].value;
         const fecha = e.target[1].value;
@@ -27,19 +28,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const patente = e.target[5].value;
         const kilometraje = e.target[6].value;
 
-    const formulario = {
-        numeroDeOrden,
-        fecha,
-        marca,
-        modelo, 
-        chofer,
-        patente,
-        kilometraje
+        const datos = {
+            numeroDeOrden,
+            fecha,
+            marca,
+            modelo, 
+            chofer,
+            patente,
+            kilometraje
     };
-});
 
-    nuevoRegistro(formulario);
-
+    nuevoRegistro(datos);
     e.target[0].value = '';
     e.target[1].value = '';
     e.target[2].value = '';
@@ -48,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     e.target[5].value = '';
     e.target[6].value = '';
 
-
+    });
 });
 
 
@@ -79,8 +78,6 @@ const titulo = () => {
     const titleKilometraje = document.createElement('th');
     titleKilometraje.innerText = 'Kilometraje';
 
-
-  //  const titleCountry = document.createElement('th');
  //Se crean y se añaden los títulos a la tabla
     titleRow.appendChild(titleNumeroDeOrden);
     titleRow.appendChild(titleFecha);
@@ -97,14 +94,13 @@ const titulo = () => {
 
 const crearTabla = (data) => {
     const table = document.createElement('table');
-
     const dataRow = document.createElement('tr');
 
     const numeroDeOrden = document.createElement('td');
     numeroDeOrden.innerText = data.numeroDeOrden;
 
     const fecha = document.createElement('td');
-    fecha.innerText = data.numeroDeOrden;
+    fecha.innerText = data.fecha;
 
     const marca = document.createElement('td');
     marca.innerText = data.marca;
@@ -125,21 +121,20 @@ const crearTabla = (data) => {
     dataRow.appendChild(fecha);
     dataRow.appendChild(marca);
     dataRow.appendChild(modelo);
-    dataRow.appendChild(marca);
     dataRow.appendChild(chofer);
     dataRow.appendChild(patente);
     dataRow.appendChild(kilometraje);
 
-    table.oppendchild(dataRow);
+    table.appendChild(dataRow);
     const sectionResult = document.getElementById('detalle');
     sectionResult.appendChild(table);
     
 }
 
 const dataList = (registrosVehiculos) => {
-    const sectionResult = document.createElement('detalle');
+    const sectionResult = document.getElementById('detalle');
     sectionResult.innerHTML = '';
-    const detalist = JSON.parse(localStorage.getItem(registrosVehiculos));
+    const detalist = registrosVehiculos;
     dataList.forEach(el => {
         const createTable = crearTabla;
         createTable(el);
@@ -147,7 +142,7 @@ const dataList = (registrosVehiculos) => {
 };
 
 const eliminarVehiculo = () => {
-    localStorage.removeItem("regitrosVehiculos");
+    localStorage.removeItem("registrosVehiculos");
     registrosVehiculos =[]
     showData();
 
@@ -159,3 +154,24 @@ bntEliminar.addEventListener('click', eliminarVehiculo);
 
 const bntMostrarRegistros = document.getElementById('btnMostrarRegistros');
 bntMostrarRegistros.addEventListener('click', verInventario);
+
+const bntBuscar = document.getElementById('buscar');
+bntBuscar.addEventListener('click', buscarVehiculo);
+
+function buscarVehiculo() {
+    const buscar = document.getElementById('buscar').value;
+    const registros = registrosVehiculos.filter(registro => registro.numeroDeOrden.includes(buscar));
+    const sectionResult = document.getElementById('detalle');
+    const createTable = crearTabla;
+    createTable(registro);
+};
+
+function showData(){
+    const sectionResult = document.getElementById('detalle');
+    sectionResult.innerHTML = '';
+    registrosVehiculos.forEach(registro => {
+        const createTable = crearTabla;
+        createTable(registro);
+    });
+}
+});
