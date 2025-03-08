@@ -132,15 +132,15 @@ document.addEventListener('DOMContentLoaded', () => {
         sectionResult.appendChild(table);
     }
 
-    const dataList = (registrosVehiculos) => {
-//        const sectionResult = document.getElementById('detalle');
+    /* const dataList = (registrosVehiculos) => {
+        const sectionResult = document.getElementById('detalle');
         sectionResult.innerHTML = '';
-//        const detalist = registrosVehiculos;
+        const detalist = registrosVehiculos;
         registrosVehiculos.forEach(el => {
             const createTable = crearTabla;
             createTable(el);    
         });
-    };
+    }; */
 
     //Limpiar registro
     const eliminarVehiculo = () => {
@@ -161,6 +161,7 @@ const bntEliminar = document.getElementById('eliminarVehiculos');
     const bntBuscar = document.getElementById('buscar');
         bntBuscar.addEventListener('click', buscarVehiculo);
 
+
 //buscar
     function buscarVehiculo() {
         const buscar = document.getElementById('buscar').value;
@@ -171,12 +172,15 @@ const bntEliminar = document.getElementById('eliminarVehiculos');
             const createTable = crearTabla;
             createTable(registro);
         });
-        document.gerElementBy('buscar').value='';
-    }
+        document.getElementById('buscar').value='';
+    };
 
+
+    //muestra registro
     function showData(){
         const sectionResult = document.getElementById('detalle');
         sectionResult.innerHTML = '';
+        titulo();
         registrosVehiculos.forEach(registro => {
             const createTable = crearTabla;
             createTable(registro);
