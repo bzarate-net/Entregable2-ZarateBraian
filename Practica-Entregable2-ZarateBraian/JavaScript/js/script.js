@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     let registrosVehiculos = JSON.parse(localStorage.getItem("registrosVehiculos")) || [];
-
+    const sectionResult = document.getElementById('detalle');
+    
 // Función para guardar en localStorage
     const guardarRegistros = () => {
     localStorage.setItem("registrosVehiculos", JSON.stringify(registrosVehiculos));
@@ -13,7 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
         guardarRegistros();
         sectionResult.innerHTML = '';
         showData()
+
+        alert('Agregado al registro correctamente');
     };
+    
   //Se crea un objeto con los datos ingresados
     document.addEventListener('DOMContentLoaded', () => {
         const formulario = document.getElementById('agregar');
@@ -37,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 kilometraje
             };
 
-        nuevoRegistro(datos);
+        registro(datos);
         e.target[0].value = '';
         e.target[1].value = '';
         e.target[2].value = '';
@@ -129,24 +133,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const dataList = (registrosVehiculos) => {
-        const sectionResult = document.getElementById('detalle');
+//        const sectionResult = document.getElementById('detalle');
         sectionResult.innerHTML = '';
-        const detalist = registrosVehiculos;
-        dataList.forEach(el => {
+//        const detalist = registrosVehiculos;
+        registrosVehiculos.forEach(el => {
             const createTable = crearTabla;
-            createTable(el);
+            createTable(el);    
         });
     };
 
+    //Limpiar registro
     const eliminarVehiculo = () => {
         localStorage.removeItem("registrosVehiculos");
         registrosVehiculos =[]
         showData();
 
-        alert('Registros eliminados correctamente')
+        alert('Todos los registros eliminados correctamente')
     }
+//botones
 
-    const bntEliminar = document.getElementById('eliminarVehiculos');
+const bntEliminar = document.getElementById('eliminarVehiculos');
         bntEliminar.addEventListener('click', eliminarVehiculo);
 
     const bntMostrarRegistros = document.getElementById('verInventario');
@@ -155,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const bntBuscar = document.getElementById('buscar');
         bntBuscar.addEventListener('click', buscarVehiculo);
 
+//buscar
     function buscarVehiculo() {
         const buscar = document.getElementById('buscar').value;
         const registros = registrosVehiculos.filter(registro => registro.numeroDeOrden.includes(buscar));
@@ -163,7 +170,8 @@ document.addEventListener('DOMContentLoaded', () => {
         registros.forEach(registro => {     
             const createTable = crearTabla;
             createTable(registro);
-        })
+        });
+        document.gerElementBy('buscar').value='';
     }
 
     function showData(){
@@ -175,5 +183,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
-
